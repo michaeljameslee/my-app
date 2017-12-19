@@ -86,6 +86,14 @@ class Game extends React.Component {
     })
   }
 
+  setHistoryButtonStyle(step) {
+    if (step === this.state.stepNumber) {
+      return {fontWeight: 'bold'};
+    } else {
+      return {fontWeight: 'normal'};
+    }
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
@@ -98,7 +106,7 @@ class Game extends React.Component {
         'Go to game start';
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button style={this.setHistoryButtonStyle(move)} onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       );
     });
