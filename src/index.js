@@ -13,34 +13,42 @@ function Square(props) {
 class Board extends React.Component {
   renderSquare(i) {
     return (
-      <Square
-        value={this.props.squares[i]}
-        onClick={() => this.props.onClick(i)}
-      />
+      <td key={i}>
+        <Square
+          value={this.props.squares[i]}
+          onClick={() => this.props.onClick(i)}
+        />
+      </td>
     );
   }
 
-  render() {
-    return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
-    );
+  renderBoard() {
+    let board = [];
+    let currentSquare = 0;
+
+    // Outer loop to create rows
+    for (let i = 0; i < 3; i++) {
+      let squares = []
+      //Inner loop to create squares
+      for (let j = 0; j < 3; j++) {
+        squares.push(this.renderSquare(currentSquare));
+        currentSquare++;
+      }
+      //Create the roww and add the squares
+      board.push(<tr key={i}>{squares}</tr>)
+    }
+    return board
   }
+
+  render() {
+    return(
+      <table>
+        <tbody>
+          {this.renderBoard()}
+        </tbody>
+      </table>
+    )
+  }  
 }
 
 class Game extends React.Component {
@@ -100,7 +108,6 @@ class Game extends React.Component {
     const winner = calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
-      
       const desc = move ?
         'Go to move #' + move + ' (col: ' + step.squares.column + ', row: ' + step.squares.row + ')':
         'Go to game start';
